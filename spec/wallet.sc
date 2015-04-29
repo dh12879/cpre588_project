@@ -11,14 +11,30 @@
 
 import "c_double_handshake";	// import the standard channel
 import "rpcclient";
+import "networkWallet";
+import "hardwareWallet";
 
 behavior Wallet(i_sender c_request, i_receiver c_response)
 {
-  RPCClient client(c_request, c_response);
+      RPCClient client(c_request, c_response);
+      
+      // Declarations needed here....
+  
+      networkWallet U00(All associated inputs and outputs);
+      hardwareWallet U01(All associated inputs and outputs);
 
-  void main(void)
-  {
-    int err, idx, txid;
+    void main(void)
+    {
+     par {
+          U00.main();
+          U01.main();
+        }
+      }
+};
+
+//**********************Reference********************
+
+ int err, idx, txid;
     TxOutSetInfo info;
     TxOut txInfo;
     Outpoint input_tx;
@@ -72,5 +88,3 @@ behavior Wallet(i_sender c_request, i_receiver c_response)
       exit (1);
     }
   }
-
-};
